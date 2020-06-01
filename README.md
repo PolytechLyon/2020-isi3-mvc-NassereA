@@ -20,7 +20,7 @@ Il est inventé par [John Horton Conway](https://fr.wikipedia.org/wiki/John_Hort
 1. Expliquer le design pattern MVC à l'aide d'un schéma à insérer directement ici.
    Utiliser un outils commde Dia pour le représenter. Je veux **votre** schéma, pas un de ceux qu'on peut trouver sur le net.
 
-![mvc](src/mvc.png)
+![mvc](img/mvc.png)
 
 Dans le pattern MVC, on distingue trois parties, "Modèle","Vue", Contrôleur". Chacun a son propore rôle : La vue se charge de l'affichage des données, le modèle contient toutes les données et le contrôleur fait le lien entre les deux.
 
@@ -70,7 +70,7 @@ L'objet _Model_ n'a pas de lien avec `la Vue` pourtant grâce à la `callback` i
 
 2. Insérer ici un UML montrant le pattern Observer-Observable liés aux objects de ce TP.
 
-![observerObservable](src/observerObservable.png)
+![observerObservable](img/observerObservable.png)
 
 _La classe Model joue le rôle d'Observable et la classe View joue le rôle d'observer._
 _A l'itialisation, Model reçoit comme callback, la méthode DrawGame de View._

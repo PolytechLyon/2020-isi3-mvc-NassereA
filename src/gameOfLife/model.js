@@ -6,10 +6,11 @@ import {
 } from "./constants";
 
 export class Model {
-  constructor() {
+  constructor(callback) {
     this.width = GAME_SIZE;
     this.height = GAME_SIZE;
     this.raf = null;
+    this.callback = callback;
   }
 
   init() {
@@ -26,14 +27,32 @@ export class Model {
     this.raf = requestAnimationFrame(() => {
       const currentTime = new Date().getTime();
       if (currentTime - date > RENDER_INTERVAL) {
-
+        let change = Array.from(new Array(this.height), () =>
+          Array.from(new Array(this.width), () => CELL_STATES.NONE)
+        );
+        for (let i = 0; i < this.width; i++) {
+          for (let j = 0; j < this.width; j++) {
+            change[j][i] = this.state[j][i];
+          }
+        }
         for (let i = 0; i < this.width; i++) {
           for (let j = 0; j < this.width; j++) {
             const nbAlive = this.aliveNeighbours(i, j);
-            // TODO implement Game of life logic
+            switch (this.state[j][i]) {
+              case CELL_STATES.ALIVE:
+                if (!(nbAlive === 2 || nbAlive === 3)) {
+                  change[j][i] = CELL_STATES.DEAD;
+                }
+                break;
+              default:
+                if (nbAlive === 3) {
+                  change[j][i] = CELL_STATES.ALIVE;
+                }
+                break;
+            }
           }
         }
-
+        this.state = change;
         this.updated();
         this.run(currentTime);
       } else {
@@ -48,7 +67,8 @@ export class Model {
   }
 
   reset() {
-    // TODO
+    this.stop();
+    this.init();
   }
 
   isCellAlive(x, y) {
@@ -62,11 +82,20 @@ export class Model {
   }
   aliveNeighbours(x, y) {
     let number = 0;
-    // TODO
+    for (let i = x - 1; i < x + 2; i++) {
+      number += this.isCellAlive(i, y - 1);
+    }
+    for (let i = x - 1; i < x + 2; i = i + 2) {
+      number += this.isCellAlive(i, y);
+    }
+    for (let i = x - 1; i < x + 2; i++) {
+      number += this.isCellAlive(i, y + 1);
+    }
+
     return number;
   }
 
   updated() {
-    // TODO update the view
+    this.callback(this);
   }
 }
